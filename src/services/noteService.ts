@@ -4,20 +4,18 @@ import type { Note, NewNote} from "../types/note";
 
 axios.defaults.baseURL = "https://notehub-public.goit.study/api";
 
-axios.defaults.headers.common = {
-    accept: 'application/json',
-    Authorization: `Bearer ${import.meta.env.VITE_NOTEHUB_TOKEN}`,
-}
+axios.defaults.headers.common['Authorization'] = `Bearer ${import.meta.env.VITE_NOTEHUB_TOKEN}`;
+
 
 interface FetchNotesParams {
     notes: Note[];
     totalPages: number;
 }
 
-export const fetchNotes = async (query: string, defaultPage: number): Promise<FetchNotesParams> => {
+export const fetchNotes = async (query: string, page: number): Promise<FetchNotesParams> => {
 const response = await axios.get<FetchNotesParams>('/notes', {
     params: { search: query, 
-        page: defaultPage},
+        page: page},
 });
 return response.data;
 };
@@ -29,7 +27,7 @@ return response.data;
 };
 
 
-export const deleteNote = async (noteId: number) => {
+export const deleteNote = async (noteId: string) => {
 const response = await axios.delete<Note>(`/notes/${noteId}`);
 return response.data;
 }

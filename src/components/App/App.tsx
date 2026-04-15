@@ -22,7 +22,11 @@ const closeModal = () => setIsModalOpen(false);
 
 const [searchQuery, setSearchQuery] = useState("");
 const [currentPage, setCurrentPage] = useState(1);
-const handleSearch = useDebouncedCallback(setSearchQuery, 300)
+
+const handleSearch = useDebouncedCallback((value: string) => {
+  setSearchQuery(value);
+  setCurrentPage(1);
+}, 300);
 
 
 const updateCurrentPage = (page: number) => {
@@ -45,7 +49,7 @@ const totalPages = data?.totalPages ? data.totalPages : 0;
     <div className={css.app}>
 
 	<header className={css.toolbar}>
-		<SearchBox searchQuery={searchQuery} onSearch={handleSearch}/>
+		<SearchBox value={searchQuery} onSearch={handleSearch}/>
    {isSuccess && totalPages > 1 && 
    (<Pagination 
     totalPages={totalPages}
